@@ -92,8 +92,8 @@
           </div>
         </div>
 
-        <!-- Custom Exercise Modal -->
-        <div id="addExerciseModal" class="modal">
+        <!-- Add Custom Exercise Modal -->
+        <div id="addExerciseModal" class="modal hidden">
           <div class="modal-content add-exercise-modal">
             <div class="modal-header">
               <h2>Add Custom Exercise</h2>
@@ -139,7 +139,6 @@
                     type="button"
                     class="exercise-type-btn"
                     data-type="push"
-                    title="Push exercises"
                   >
                     💪 Push
                   </button>
@@ -147,7 +146,6 @@
                     type="button"
                     class="exercise-type-btn"
                     data-type="pull"
-                    title="Pull exercises"
                   >
                     🤸 Pull
                   </button>
@@ -155,7 +153,6 @@
                     type="button"
                     class="exercise-type-btn"
                     data-type="legs"
-                    title="Leg exercises"
                   >
                     🦵 Legs
                   </button>
@@ -163,7 +160,6 @@
                     type="button"
                     class="exercise-type-btn"
                     data-type="cardio"
-                    title="Cardio exercises"
                   >
                     🏃 Cardio
                   </button>
@@ -209,6 +205,7 @@
                     id="customExerciseImage"
                     accept="image/*"
                   />
+                  <p>📷 Click to upload an image</p>
                   <div id="imagePreview" class="image-preview hidden"></div>
                 </div>
               </div>
@@ -274,9 +271,7 @@
 
           <!-- Overview Tab -->
           <section id="overview-tab" class="tab-content active">
-            <!-- Quick Stats Grid -->
             <div class="stats-grid">
-              <!-- Calories Card -->
               <div class="stat-card card">
                 <div class="stat-header">
                   <h3>Calories Today</h3>
@@ -305,7 +300,6 @@
                 >
               </div>
 
-              <!-- Water Card -->
               <div class="stat-card card">
                 <div class="stat-header">
                   <h3>Water Intake</h3>
@@ -332,7 +326,6 @@
                 >
               </div>
 
-              <!-- Workout Card -->
               <div class="stat-card card">
                 <div class="stat-header">
                   <h3>Workout Status</h3>
@@ -358,8 +351,6 @@
                 >
               </div>
             </div>
-
-            <!-- Daily Message -->
             <div class="motivational-card card">
               <p id="motivationalMessage">💪 Let's crush today's goals!</p>
             </div>
@@ -371,8 +362,6 @@
               <h2>Calorie Tracker</h2>
               <button class="btn btn-small" id="resetCaloriesBtn">Reset</button>
             </div>
-
-            <!-- Calorie Progress -->
             <div class="calorie-summary card">
               <div class="calorie-circle">
                 <svg viewBox="0 0 200 200" class="circular-progress">
@@ -392,21 +381,19 @@
               </div>
               <div class="calorie-stats">
                 <div class="stat-row">
-                  <span>Consumed</span>
-                  <strong id="calorieConsumed">0</strong>
+                  <span>Consumed</span><strong id="calorieConsumed">0</strong>
                 </div>
                 <div class="stat-row">
-                  <span>Remaining</span>
-                  <strong id="calorieRemaining">2000</strong>
+                  <span>Remaining</span
+                  ><strong id="calorieRemaining">2000</strong>
                 </div>
                 <div class="stat-row">
-                  <span>Daily Goal</span>
-                  <strong id="calorieGoalDisplay">2000</strong>
+                  <span>Daily Goal</span
+                  ><strong id="calorieGoalDisplay">2000</strong>
                 </div>
               </div>
             </div>
 
-            <!-- Warning Alert -->
             <div id="calorieWarning" class="warning-alert hidden">
               <div class="warning-content">
                 <span class="warning-icon">⚠️</span>
@@ -423,7 +410,6 @@
               </button>
             </div>
 
-            <!-- Add Food Form -->
             <div class="food-input-section card">
               <h3>Add Food Item</h3>
               <form id="foodForm" class="food-form">
@@ -452,48 +438,44 @@
                 </button>
               </form>
 
-              <!-- Quick Meals Presets -->
               <div class="quick-meals card">
                 <h4>🍽️ Quick Meals</h4>
                 <div class="quick-meal-grid">
                   <button class="quick-meal-btn" data-meal="chicken">
-                    <span class="meal-emoji">🍗</span>
-                    <span class="meal-name">Chicken Meal</span>
-                    <span class="meal-cal">650 kcal</span>
+                    <span class="meal-emoji">🍗</span
+                    ><span class="meal-name">Chicken Meal</span
+                    ><span class="meal-cal">650 kcal</span>
                   </button>
                   <button class="quick-meal-btn" data-meal="beef">
-                    <span class="meal-emoji">🥩</span>
-                    <span class="meal-name">Beef Meal</span>
-                    <span class="meal-cal">700 kcal</span>
+                    <span class="meal-emoji">🥩</span
+                    ><span class="meal-name">Beef Meal</span
+                    ><span class="meal-cal">700 kcal</span>
                   </button>
                   <button class="quick-meal-btn" data-meal="fish">
-                    <span class="meal-emoji">🐟</span>
-                    <span class="meal-name">Fish Meal</span>
-                    <span class="meal-cal">700 kcal</span>
+                    <span class="meal-emoji">🐟</span
+                    ><span class="meal-name">Fish Meal</span
+                    ><span class="meal-cal">700 kcal</span>
                   </button>
-
                   <button
                     class="quick-meal-btn"
                     data-name="Protein Shake Dinner"
                     data-cal="365"
                   >
-                    <span class="meal-emoji">🥤</span>
-                    <span class="meal-name">Chicken Meal</span>
-                    <span class="meal-cal">365 kcal</span>
+                    <span class="meal-emoji">🥤</span
+                    ><span class="meal-name">Protein Shake</span
+                    ><span class="meal-cal">365 kcal</span>
                   </button>
-
                   <button
                     class="quick-meal-btn"
                     data-name="Creatine 5g"
                     data-cal="0"
                   >
-                    <span class="meal-emoji">⚡</span>
-                    <span class="meal-name">Creatine</span>
+                    <span class="meal-emoji">⚡</span
+                    ><span class="meal-name">Creatine</span>
                   </button>
                 </div>
               </div>
 
-              <!-- Extended Quick Foods -->
               <div class="quick-foods card">
                 <h4>Quick Add</h4>
                 <div class="quick-food-grid">
@@ -582,7 +564,6 @@
               </div>
             </div>
 
-            <!-- Food Log -->
             <div class="food-log-section">
               <h3>Today's Log</h3>
               <div id="foodLog" class="food-log">
@@ -599,8 +580,6 @@
               <h2>Water Tracker</h2>
               <button class="btn btn-small" id="resetWaterBtn">Reset</button>
             </div>
-
-            <!-- Water Progress Circle -->
             <div class="water-container card">
               <div class="water-circle">
                 <svg viewBox="0 0 200 200" class="water-circular-progress">
@@ -625,8 +604,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Water Buttons -->
             <div class="water-buttons card">
               <h3>Add Water</h3>
               <div class="button-grid">
@@ -636,8 +613,6 @@
                 <button class="btn btn-water" data-amount="1000">+1 L</button>
               </div>
             </div>
-
-            <!-- Custom Amount -->
             <div class="custom-water card">
               <h3>Custom Amount</h3>
               <form id="customWaterForm" class="water-form">
@@ -655,8 +630,6 @@
                 <button type="submit" class="btn btn-primary">Add Water</button>
               </form>
             </div>
-
-            <!-- Water Log -->
             <div class="water-log-section">
               <h3>Water History</h3>
               <div id="waterLog" class="water-log">
@@ -681,7 +654,6 @@
               </div>
             </div>
 
-            <!-- Workout Categories -->
             <div class="workout-categories">
               <div class="category-tab active" data-category="all">
                 All Workouts
@@ -692,12 +664,10 @@
               <div class="category-tab" data-category="cardio">Cardio 🏃</div>
             </div>
 
-            <!-- Workout List -->
             <div id="workoutList" class="workout-list">
-              <!-- Populated by JavaScript -->
+              <!-- populated by JS -->
             </div>
 
-            <!-- Completed Workouts -->
             <div class="completed-section">
               <h3>✅ Today's Completed Workouts</h3>
               <div id="completedWorkouts" class="completed-list">
@@ -707,7 +677,6 @@
               </div>
             </div>
 
-            <!-- Custom Exercises -->
             <div class="custom-exercises-section">
               <h3>⭐ Custom Exercises</h3>
               <div id="customExercisesList" class="custom-exercises-list">
@@ -720,36 +689,27 @@
 
           <!-- History Tab -->
           <section id="history-tab" class="tab-content">
-            <div class="tab-header">
-              <h2>Progress History</h2>
-            </div>
-
-            <!-- Stats Overview -->
+            <div class="tab-header"><h2>Progress History</h2></div>
             <div class="history-stats card">
               <div class="history-stat">
-                <span class="stat-label">Total Workouts</span>
-                <span class="stat-value" id="totalWorkouts">0</span>
+                <span class="stat-label">Total Workouts</span
+                ><span class="stat-value" id="totalWorkouts">0</span>
               </div>
               <div class="history-stat">
-                <span class="stat-label">Total Water</span>
-                <span class="stat-value" id="totalWater">0L</span>
+                <span class="stat-label">Total Water</span
+                ><span class="stat-value" id="totalWater">0L</span>
               </div>
               <div class="history-stat">
-                <span class="stat-label">Current Weight</span>
-                <span class="stat-value" id="currentWeight">0</span>
+                <span class="stat-label">Current Weight</span
+                ><span class="stat-value" id="currentWeight">0</span>
               </div>
             </div>
-
-            <!-- Weekly & Monthly Summaries -->
             <div class="analytics-section card">
               <div id="weeklySummary" class="summary-container"></div>
             </div>
-
             <div class="analytics-section card">
               <div id="monthlySummary" class="summary-container"></div>
             </div>
-
-            <!-- Daily History -->
             <div class="history-list">
               <h3>Recent Days</h3>
               <div id="historyEntries" class="history-entries">
@@ -758,8 +718,6 @@
                 </p>
               </div>
             </div>
-
-            <!-- Data Management -->
             <div class="data-management card">
               <h3>📤 Data Management</h3>
               <p>Export or import your fitness data</p>
@@ -777,8 +735,6 @@
                 placeholder="Your exported data will appear here..."
               ></textarea>
             </div>
-
-            <!-- Reset Data -->
             <div class="danger-zone card">
               <h3>⚠️ Danger Zone</h3>
               <p>
@@ -794,11 +750,48 @@
       </main>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div id="toast" class="toast"></div>
 
-    <!-- Scripts -->
+    <!-- Scripts — order matters -->
     <script src="js/storage.js"></script>
+
+    <!-- Patch: add saveCustomExercises to storage if not present -->
+    <script>
+      if (typeof storage !== "undefined" && !storage.saveCustomExercises) {
+        storage.saveCustomExercises = function (exercises) {
+          try {
+            const data = JSON.parse(
+              localStorage.getItem("fitflow_data") || "{}",
+            );
+            const today = new Date().toISOString().split("T")[0];
+            if (!data[today]) data[today] = {};
+            data[today].customExercises = exercises;
+            // Also save globally so it persists across days
+            data._customExercises = exercises;
+            localStorage.setItem("fitflow_data", JSON.stringify(data));
+          } catch (e) {
+            console.error("saveCustomExercises error", e);
+          }
+        };
+
+        // Patch getCustomExercises to also check global key
+        const _orig = storage.getCustomExercises.bind(storage);
+        storage.getCustomExercises = function () {
+          const local = _orig();
+          if (local && local.length) return local;
+          try {
+            const data = JSON.parse(
+              localStorage.getItem("fitflow_data") || "{}",
+            );
+            return data._customExercises || [];
+          } catch (e) {
+            return [];
+          }
+        };
+      }
+    </script>
+
     <script src="js/ui.js"></script>
     <script src="js/calories.js"></script>
     <script src="js/water.js"></script>

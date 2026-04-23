@@ -1,6 +1,6 @@
 /**
- * FitFlow - UI Manager
- * Handles UI updates, theme switching, and navigation
+ * FitFlow - UI Manager v2.0
+ * Handles UI updates, theme switching, navigation, and edit modal
  */
 
 class UIManager {
@@ -25,10 +25,65 @@ class UIManager {
     this.setupEventListeners();
     this.applyTheme();
     this.renderGradients();
+    this.injectEditModal();
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  EDIT MODAL INJECTION (so it's always in the DOM)
+  // ─────────────────────────────────────────────────────────────
+  injectEditModal() {
+    if (document.getElementById("editExerciseModal")) return;
+
+    const modal = document.createElement("div");
+    modal.id = "editExerciseModal";
+    modal.className = "modal hidden";
+    modal.innerHTML = `
+      <div class="modal-content edit-exercise-modal">
+        <div class="modal-header">
+          <h2>✏️ Edit Exercise</h2>
+          <p>Update exercise details and muscle ratings</p>
+        </div>
+        <div class="edit-exercise-body">
+          <div class="form-group">
+            <label for="editExName">Exercise Name</label>
+            <input type="text" id="editExName" placeholder="e.g., Push-ups" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editExSets">Sets</label>
+              <input type="text" id="editExSets" placeholder="e.g., 3" />
+            </div>
+            <div class="form-group">
+              <label for="editExReps">Reps / Duration</label>
+              <input type="text" id="editExReps" placeholder="e.g., 10–15" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editExDiff">Difficulty</label>
+            <select id="editExDiff">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Muscles Worked</label>
+            <div id="editMuscleRows" class="edit-muscle-rows"></div>
+            <button id="addMuscleBtn" class="btn btn-secondary btn-small" style="margin-top:8px;">+ Add Muscle</button>
+          </div>
+
+          <div class="form-actions">
+            <button id="closeEditModal" class="btn btn-secondary">Cancel</button>
+            <button id="saveEditBtn" class="btn btn-primary">Save Changes 💾</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
   }
 
   setupEventListeners() {
-    // Dark mode toggle
+    // Dark mode
     document.getElementById("darkModeBtn").addEventListener("click", () => {
       this.toggleDarkMode();
     });
@@ -42,26 +97,25 @@ class UIManager {
   }
 
   renderGradients() {
-    // Add SVG gradients to the page if they don't exist
     if (!document.getElementById("gradient")) {
       const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.style.display = "none";
       svg.innerHTML = `
-                <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#FFB800;stop-opacity:1" />
-                    </linearGradient>
-                    <linearGradient id="gradient-warning" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#E63946;stop-opacity:1" />
-                    </linearGradient>
-                    <linearGradient id="water-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#44A08D;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-            `;
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FFB800;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="gradient-warning" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#E63946;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="water-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#44A08D;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+      `;
       document.body.appendChild(svg);
     }
   }
@@ -69,10 +123,8 @@ class UIManager {
   toggleDarkMode() {
     const isDark = document.body.classList.toggle("dark-mode");
     storage.setDarkMode(isDark);
-
     const icon = document.querySelector(".mode-icon");
     icon.textContent = isDark ? "☀️" : "🌙";
-
     showToast(isDark ? "Dark mode enabled! 🌙" : "Light mode enabled! ☀️");
   }
 
@@ -85,19 +137,14 @@ class UIManager {
   }
 
   switchTab(tabName) {
-    // Update tab buttons
-    document.querySelectorAll(".tab-btn").forEach((btn) => {
-      btn.classList.remove("active");
-    });
+    document
+      .querySelectorAll(".tab-btn")
+      .forEach((btn) => btn.classList.remove("active"));
     document.querySelector(`[data-tab="${tabName}"]`).classList.add("active");
-
-    // Update tab content
-    document.querySelectorAll(".tab-content").forEach((content) => {
-      content.classList.remove("active");
-    });
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((content) => content.classList.remove("active"));
     document.getElementById(`${tabName}-tab`).classList.add("active");
-
-    // Scroll to top
     window.scrollTo(0, 0);
   }
 
@@ -110,73 +157,56 @@ class UIManager {
   updateStreakCard() {
     const profile = storage.getProfile();
     const streak = storage.calculateStreak(profile.dailyCalories);
-
     document.getElementById("currentStreak").textContent = streak.current;
     document.getElementById("bestStreak").textContent = streak.best;
 
-    // Update requirement indicators
     const requirements = storage.checkStreakRequirements(profile.dailyCalories);
-
     this.updateRequirement("calories", requirements.calories);
     this.updateRequirement("water", requirements.water);
     this.updateRequirement("workout", requirements.workout);
   }
+
   updateRequirement(type, met) {
     const req = document.getElementById(`req-${type}`);
-
-    if (met) {
-      req.classList.add("completed");
-    } else {
-      req.classList.remove("completed");
-    }
+    if (met) req.classList.add("completed");
+    else req.classList.remove("completed");
   }
 
   updateOverview() {
     const profile = storage.getProfile();
     const dailyData = storage.getDailyData();
 
-    // Calories
     const caloriesDisplay = document.getElementById("caloriesDisplay");
-    if (caloriesDisplay) {
-      caloriesDisplay.textContent = dailyData.calories;
-    }
+    if (caloriesDisplay) caloriesDisplay.textContent = dailyData.calories;
 
     const caloriesGoal = document.getElementById("calorieGoal");
-    if (caloriesGoal) {
-      caloriesGoal.textContent = profile.dailyCalories;
-    }
+    if (caloriesGoal) caloriesGoal.textContent = profile.dailyCalories;
 
     const caloriesProgress = document.getElementById("caloriesProgress");
     if (caloriesProgress) {
-      const percentage = Math.min(
+      const pct = Math.min(
         (dailyData.calories / profile.dailyCalories) * 100,
         100,
       );
-      caloriesProgress.style.width = percentage + "%";
+      caloriesProgress.style.width = pct + "%";
     }
 
-    // Water
     const waterDisplay = document.getElementById("waterDisplay");
-    if (waterDisplay) {
-      waterDisplay.textContent = dailyData.water;
-    }
+    if (waterDisplay) waterDisplay.textContent = dailyData.water;
 
     const waterProgress = document.getElementById("waterProgress");
     if (waterProgress) {
-      const percentage = Math.min((dailyData.water / 2000) * 100, 100);
-      waterProgress.style.width = percentage + "%";
+      const pct = Math.min((dailyData.water / 2000) * 100, 100);
+      waterProgress.style.width = pct + "%";
     }
   }
 
   updateMotivationalMessage() {
-    const message = this.getRandomMotivationalMessage();
+    const message =
+      this.motivationalMessages[
+        Math.floor(Math.random() * this.motivationalMessages.length)
+      ];
     document.getElementById("motivationalMessage").textContent = message;
-  }
-
-  getRandomMotivationalMessage() {
-    return this.motivationalMessages[
-      Math.floor(Math.random() * this.motivationalMessages.length)
-    ];
   }
 
   renderHistory() {
@@ -197,32 +227,29 @@ class UIManager {
           month: "short",
           day: "numeric",
         });
-
         const calories = day.calories || 0;
         const water = day.water || 0;
         const workouts = day.workouts ? day.workouts.length : 0;
-
         return `
-                <div class="history-entry">
-                    <div class="history-entry-date">${dateStr}</div>
-                    <div class="history-entry-item">
-                        <span class="history-entry-label">🍽️ Calories</span>
-                        <span class="history-entry-value">${calories} kcal</span>
-                    </div>
-                    <div class="history-entry-item">
-                        <span class="history-entry-label">💧 Water</span>
-                        <span class="history-entry-value">${(water / 1000).toFixed(1)}L</span>
-                    </div>
-                    <div class="history-entry-item">
-                        <span class="history-entry-label">🏋️ Workouts</span>
-                        <span class="history-entry-value">${workouts} completed</span>
-                    </div>
-                </div>
-            `;
+        <div class="history-entry">
+          <div class="history-entry-date">${dateStr}</div>
+          <div class="history-entry-item">
+            <span class="history-entry-label">🍽️ Calories</span>
+            <span class="history-entry-value">${calories} kcal</span>
+          </div>
+          <div class="history-entry-item">
+            <span class="history-entry-label">💧 Water</span>
+            <span class="history-entry-value">${(water / 1000).toFixed(1)}L</span>
+          </div>
+          <div class="history-entry-item">
+            <span class="history-entry-label">🏋️ Workouts</span>
+            <span class="history-entry-value">${workouts} completed</span>
+          </div>
+        </div>
+      `;
       })
       .join("");
 
-    // Update stats
     const allDays = storage.getAllDays();
     const totalWorkouts = allDays.reduce(
       (sum, day) => sum + (day.workouts ? day.workouts.length : 0),
@@ -239,12 +266,12 @@ class UIManager {
   }
 }
 
-// Create global instance
+// Global instance
 const uiManager = new UIManager();
 
-/**
- * Global helper functions
- */
+// ─────────────────────────────────────────────────────────────
+//  GLOBAL HELPERS
+// ─────────────────────────────────────────────────────────────
 
 function switchTab(tabName) {
   uiManager.switchTab(tabName);
@@ -254,41 +281,41 @@ function showToast(message) {
   const toast = document.getElementById("toast");
   toast.textContent = message;
   toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
+  setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
 function playSound(type = "success") {
-  // Using Web Audio API for simple beep sounds
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
-
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-
-  switch (type) {
-    case "success":
-      oscillator.frequency.value = 800;
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(
-        0.01,
-        audioContext.currentTime + 0.2,
-      );
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.2);
-      break;
-    case "warning":
-      oscillator.frequency.value = 400;
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(
-        0.01,
-        audioContext.currentTime + 0.3,
-      );
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.3);
-      break;
+  try {
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    switch (type) {
+      case "success":
+        oscillator.frequency.value = 800;
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioContext.currentTime + 0.2,
+        );
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.2);
+        break;
+      case "warning":
+        oscillator.frequency.value = 400;
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioContext.currentTime + 0.3,
+        );
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+        break;
+    }
+  } catch (e) {
+    /* audio not available */
   }
 }
