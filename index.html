@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="app-container">
-      <!-- Header -->
+      <!-- ══════════════ HEADER ══════════════ -->
       <header class="app-header">
         <div class="header-content">
           <div class="logo-section">
@@ -27,9 +27,8 @@
         </div>
       </header>
 
-      <!-- Main Content -->
       <main class="app-main">
-        <!-- Setup Modal -->
+        <!-- ══════════════ SETUP MODAL ══════════════ -->
         <div id="setupModal" class="modal">
           <div class="modal-content setup-modal">
             <div class="modal-header">
@@ -92,16 +91,16 @@
           </div>
         </div>
 
-        <!-- Add Custom Exercise Modal -->
+        <!-- ══════════════ ADD EXERCISE MODAL ══════════════ -->
         <div id="addExerciseModal" class="modal hidden">
           <div class="modal-content add-exercise-modal">
             <div class="modal-header">
-              <h2>Add Custom Exercise</h2>
-              <p>Create and track your own workout</p>
+              <h2>Add Exercise</h2>
+              <p>Create a custom workout to track</p>
             </div>
             <form id="addExerciseForm" class="add-exercise-form">
               <div class="form-group">
-                <label for="customExerciseName">Exercise Name</label>
+                <label for="customExerciseName">Exercise Name *</label>
                 <input
                   type="text"
                   id="customExerciseName"
@@ -109,31 +108,9 @@
                   required
                 />
               </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="customExerciseSets">Number of Sets</label>
-                  <input
-                    type="number"
-                    id="customExerciseSets"
-                    placeholder="e.g., 3"
-                    min="1"
-                    max="20"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="customExerciseReps">Reps per Set</label>
-                  <input
-                    type="number"
-                    id="customExerciseReps"
-                    placeholder="e.g., 15"
-                    min="1"
-                    max="100"
-                  />
-                </div>
-              </div>
+
               <div class="form-group">
-                <label for="customExerciseType">Workout Type</label>
+                <label>Workout Type *</label>
                 <div class="exercise-type-selector">
                   <button
                     type="button"
@@ -166,6 +143,39 @@
                 </div>
                 <input type="hidden" id="customExerciseType" required />
               </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="customExerciseSets">Sets *</label>
+                  <input
+                    type="number"
+                    id="customExerciseSets"
+                    placeholder="e.g., 3"
+                    min="1"
+                    max="20"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="customExerciseReps">Reps per Set</label>
+                  <input
+                    type="number"
+                    id="customExerciseReps"
+                    placeholder="e.g., 15"
+                    min="1"
+                    max="200"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="customExerciseDifficulty">Difficulty</label>
+                <select id="customExerciseDifficulty">
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                </select>
+              </div>
+
               <div class="form-group">
                 <label>Calories Burned</label>
                 <div class="calorie-input-group">
@@ -177,7 +187,7 @@
                         value="manual"
                         checked
                       />
-                      Manual Entry
+                      Manual
                     </label>
                     <label class="radio-label">
                       <input type="radio" name="calorieMode" value="estimate" />
@@ -195,6 +205,7 @@
                   <span class="calorie-estimate" id="calorieEstimate"></span>
                 </div>
               </div>
+
               <div class="form-group">
                 <label for="customExerciseImage"
                   >Exercise Image (Optional)</label
@@ -205,10 +216,11 @@
                     id="customExerciseImage"
                     accept="image/*"
                   />
-                  <p>📷 Click to upload an image</p>
+                  <p>📷 Tap to upload an image</p>
                   <div id="imagePreview" class="image-preview hidden"></div>
                 </div>
               </div>
+
               <div class="form-actions">
                 <button
                   type="button"
@@ -225,9 +237,115 @@
           </div>
         </div>
 
-        <!-- Dashboard -->
+        <!-- ══════════════ EDIT EXERCISE MODAL ══════════════ -->
+        <!-- Also injected by ui.js ensureEditModal() — the id check prevents duplicates -->
+        <div id="editExerciseModal" class="modal hidden">
+          <div class="modal-content edit-exercise-modal">
+            <div class="modal-header">
+              <h2>✏️ Edit Exercise</h2>
+              <p>Update details and muscle ratings instantly</p>
+            </div>
+            <div class="edit-exercise-body">
+              <div class="form-group">
+                <label>Exercise Name</label>
+                <input
+                  type="text"
+                  id="editExName"
+                  placeholder="e.g., Push-ups"
+                />
+              </div>
+              <div class="form-group">
+                <label>Type</label>
+                <div class="exercise-type-selector edit-type-selector">
+                  <button
+                    type="button"
+                    class="exercise-type-btn edit-type-btn"
+                    data-type="push"
+                  >
+                    💪 Push
+                  </button>
+                  <button
+                    type="button"
+                    class="exercise-type-btn edit-type-btn"
+                    data-type="pull"
+                  >
+                    🤸 Pull
+                  </button>
+                  <button
+                    type="button"
+                    class="exercise-type-btn edit-type-btn"
+                    data-type="legs"
+                  >
+                    🦵 Legs
+                  </button>
+                  <button
+                    type="button"
+                    class="exercise-type-btn edit-type-btn"
+                    data-type="cardio"
+                  >
+                    🏃 Cardio
+                  </button>
+                </div>
+                <input type="hidden" id="editExType" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Sets</label>
+                  <input type="text" id="editExSets" placeholder="3" />
+                </div>
+                <div class="form-group">
+                  <label>Reps / Duration</label>
+                  <input type="text" id="editExReps" placeholder="10–15" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Difficulty</label>
+                <select id="editExDiff">
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Muscles Worked</label>
+                <div id="editMuscleRows" class="edit-muscle-rows"></div>
+                <button
+                  id="addMuscleBtn"
+                  class="btn btn-secondary btn-small"
+                  style="margin-top: 8px"
+                >
+                  + Add Muscle
+                </button>
+              </div>
+              <div class="form-actions">
+                <button id="closeEditModal" class="btn btn-secondary">
+                  Cancel
+                </button>
+                <button id="saveEditBtn" class="btn btn-primary">
+                  Save Changes 💾
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════ DAY DETAIL MODAL ══════════════ -->
+        <div id="dayDetailModal" class="modal hidden">
+          <div class="modal-content day-detail-modal">
+            <div class="modal-header">
+              <h2>📅 Day Summary</h2>
+              <button id="closeDayDetail" class="btn btn-secondary btn-small">
+                Close
+              </button>
+            </div>
+            <div id="dayDetailContent" class="day-detail-content">
+              <!-- Rendered by uiManager.openDayDetail() -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════ DASHBOARD ══════════════ -->
         <div id="dashboard" class="dashboard hidden">
-          <!-- Streak & Stats Header -->
+          <!-- STREAK CARD -->
           <section class="streak-card card">
             <div class="streak-content">
               <div class="streak-main">
@@ -260,108 +378,99 @@
             </div>
           </section>
 
-          <!-- Tabs Navigation -->
+          <!-- TAB NAVIGATION -->
           <nav class="tabs-navigation">
             <button class="tab-btn active" data-tab="overview">Overview</button>
             <button class="tab-btn" data-tab="calories">🍽️ Calories</button>
             <button class="tab-btn" data-tab="water">💧 Water</button>
             <button class="tab-btn" data-tab="workouts">🏋️ Workouts</button>
-            <button class="tab-btn" data-tab="history">📊 History</button>
+            <button class="tab-btn" data-tab="history">📅 History</button>
           </nav>
 
-          <!-- Overview Tab -->
+          <!-- ══ OVERVIEW TAB ══ -->
           <section id="overview-tab" class="tab-content active">
-            <div class="stats-grid">
-              <div class="stat-card card">
-                <div class="stat-header">
-                  <h3>Calories Today</h3>
-                  <span class="stat-icon">🍽️</span>
+            <!-- Single quick-glance row — NOT the full tracker cards -->
+            <div class="overview-row">
+              <div
+                class="overview-tile"
+                onclick="switchTab('calories')"
+                role="button"
+                tabindex="0"
+              >
+                <div class="tile-icon">🍽️</div>
+                <div class="tile-body">
+                  <div class="tile-label">Calories</div>
+                  <div class="tile-value">
+                    <span id="caloriesDisplay">0</span>
+                    <span class="tile-unit">
+                      / <span id="calorieGoal">2000</span> kcal</span
+                    >
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="caloriesProgress"></div>
+                  </div>
                 </div>
-                <div class="stat-display">
-                  <span class="stat-value" id="caloriesDisplay">0</span>
-                  <span class="stat-unit">kcal</span>
-                </div>
-                <div class="stat-info">
-                  <span class="stat-limit"
-                    >Goal: <span id="calorieGoal">2000</span> kcal</span
-                  >
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill" id="caloriesProgress"></div>
-                </div>
-                <a
-                  href="#"
-                  class="stat-link"
-                  onclick="
-                    switchTab('calories');
-                    return false;
-                  "
-                  >Log Food →</a
-                >
               </div>
 
-              <div class="stat-card card">
-                <div class="stat-header">
-                  <h3>Water Intake</h3>
-                  <span class="stat-icon">💧</span>
+              <div
+                class="overview-tile"
+                onclick="switchTab('water')"
+                role="button"
+                tabindex="0"
+              >
+                <div class="tile-icon">💧</div>
+                <div class="tile-body">
+                  <div class="tile-label">Water</div>
+                  <div class="tile-value">
+                    <span id="waterDisplay">0</span>
+                    <span class="tile-unit"> / 2000 ml</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill water-fill"
+                      id="waterProgress"
+                    ></div>
+                  </div>
                 </div>
-                <div class="stat-display">
-                  <span class="stat-value" id="waterDisplay">0</span>
-                  <span class="stat-unit">ml</span>
-                </div>
-                <div class="stat-info">
-                  <span class="stat-limit">Goal: 2000 ml</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill" id="waterProgress"></div>
-                </div>
-                <a
-                  href="#"
-                  class="stat-link"
-                  onclick="
-                    switchTab('water');
-                    return false;
-                  "
-                  >Add Water →</a
-                >
               </div>
 
-              <div class="stat-card card">
-                <div class="stat-header">
-                  <h3>Workout Status</h3>
-                  <span class="stat-icon">🏋️</span>
-                </div>
-                <div class="stat-display workout-status">
-                  <span id="workoutStatus">Not Started</span>
-                </div>
-                <div class="stat-info">
-                  <span id="workoutTime">Complete your workout today</span>
-                </div>
-                <div class="workout-checklist-preview">
+              <div
+                class="overview-tile"
+                onclick="switchTab('workouts')"
+                role="button"
+                tabindex="0"
+              >
+                <div class="tile-icon">🏋️</div>
+                <div class="tile-body">
+                  <div class="tile-label">Workouts</div>
+                  <div class="tile-value">
+                    <span
+                      id="workoutStatus"
+                      class="stat-value workout-status pending"
+                      >Not Started</span
+                    >
+                  </div>
+                  <div id="workoutTime" class="tile-sub">
+                    Complete your workout today
+                  </div>
                   <div id="workoutPreview"></div>
                 </div>
-                <a
-                  href="#"
-                  class="stat-link"
-                  onclick="
-                    switchTab('workouts');
-                    return false;
-                  "
-                  >View Workouts →</a
-                >
               </div>
             </div>
+
+            <!-- Motivational banner -->
             <div class="motivational-card card">
               <p id="motivationalMessage">💪 Let's crush today's goals!</p>
             </div>
           </section>
 
-          <!-- Calories Tab -->
+          <!-- ══ CALORIES TAB ══ -->
           <section id="calories-tab" class="tab-content">
             <div class="tab-header">
               <h2>Calorie Tracker</h2>
               <button class="btn btn-small" id="resetCaloriesBtn">Reset</button>
             </div>
+
             <div class="calorie-summary card">
               <div class="calorie-circle">
                 <svg viewBox="0 0 200 200" class="circular-progress">
@@ -442,36 +551,36 @@
                 <h4>🍽️ Quick Meals</h4>
                 <div class="quick-meal-grid">
                   <button class="quick-meal-btn" data-meal="chicken">
-                    <span class="meal-emoji">🍗</span
-                    ><span class="meal-name">Chicken Meal</span
-                    ><span class="meal-cal">650 kcal</span>
+                    <span class="meal-emoji">🍗</span>
+                    <span class="meal-name">Chicken Meal</span>
+                    <span class="meal-cal">650 kcal</span>
                   </button>
                   <button class="quick-meal-btn" data-meal="beef">
-                    <span class="meal-emoji">🥩</span
-                    ><span class="meal-name">Beef Meal</span
-                    ><span class="meal-cal">700 kcal</span>
+                    <span class="meal-emoji">🥩</span>
+                    <span class="meal-name">Beef Meal</span>
+                    <span class="meal-cal">700 kcal</span>
                   </button>
                   <button class="quick-meal-btn" data-meal="fish">
-                    <span class="meal-emoji">🐟</span
-                    ><span class="meal-name">Fish Meal</span
-                    ><span class="meal-cal">700 kcal</span>
+                    <span class="meal-emoji">🐟</span>
+                    <span class="meal-name">Fish Meal</span>
+                    <span class="meal-cal">700 kcal</span>
                   </button>
                   <button
                     class="quick-meal-btn"
-                    data-name="Protein Shake Dinner"
+                    data-name="Protein Shake"
                     data-cal="365"
                   >
-                    <span class="meal-emoji">🥤</span
-                    ><span class="meal-name">Protein Shake</span
-                    ><span class="meal-cal">365 kcal</span>
+                    <span class="meal-emoji">🥤</span>
+                    <span class="meal-name">Protein Shake</span>
+                    <span class="meal-cal">365 kcal</span>
                   </button>
                   <button
                     class="quick-meal-btn"
                     data-name="Creatine 5g"
                     data-cal="0"
                   >
-                    <span class="meal-emoji">⚡</span
-                    ><span class="meal-name">Creatine</span>
+                    <span class="meal-emoji">⚡</span>
+                    <span class="meal-name">Creatine</span>
                   </button>
                 </div>
               </div>
@@ -530,14 +639,14 @@
                   </button>
                   <button
                     class="quick-food-btn"
-                    data-food="Cucumber + Carrot (50 kcal)"
+                    data-food="Veggies (50 kcal)"
                     data-cal="50"
                   >
                     🥒 Veggies
                   </button>
                   <button
                     class="quick-food-btn"
-                    data-food="Mashed Potatoes 100g (110 kcal)"
+                    data-food="Potatoes 100g (110 kcal)"
                     data-cal="110"
                   >
                     🥔 Potatoes
@@ -558,8 +667,8 @@
                   </button>
                 </div>
                 <p class="quick-tip">
-                  💡 Tip: When you add food manually, it's automatically saved
-                  as a quick item for next time!
+                  💡 Manually added foods are saved as quick items for next
+                  time!
                 </p>
               </div>
             </div>
@@ -574,12 +683,13 @@
             </div>
           </section>
 
-          <!-- Water Tab -->
+          <!-- ══ WATER TAB ══ -->
           <section id="water-tab" class="tab-content">
             <div class="tab-header">
               <h2>Water Tracker</h2>
               <button class="btn btn-small" id="resetWaterBtn">Reset</button>
             </div>
+
             <div class="water-container card">
               <div class="water-circle">
                 <svg viewBox="0 0 200 200" class="water-circular-progress">
@@ -604,6 +714,7 @@
                 </div>
               </div>
             </div>
+
             <div class="water-buttons card">
               <h3>Add Water</h3>
               <div class="button-grid">
@@ -613,6 +724,7 @@
                 <button class="btn btn-water" data-amount="1000">+1 L</button>
               </div>
             </div>
+
             <div class="custom-water card">
               <h3>Custom Amount</h3>
               <form id="customWaterForm" class="water-form">
@@ -630,6 +742,7 @@
                 <button type="submit" class="btn btn-primary">Add Water</button>
               </form>
             </div>
+
             <div class="water-log-section">
               <h3>Water History</h3>
               <div id="waterLog" class="water-log">
@@ -640,12 +753,15 @@
             </div>
           </section>
 
-          <!-- Workouts Tab -->
+          <!-- ══ WORKOUTS TAB ══ -->
           <section id="workouts-tab" class="tab-content">
             <div class="tab-header">
-              <h2>Workout Tracker</h2>
+              <h2>My Exercises</h2>
               <div class="tab-controls">
-                <button class="btn btn-small" id="addCustomExerciseBtn">
+                <button
+                  class="btn btn-primary btn-small"
+                  id="addCustomExerciseBtn"
+                >
                   + Add Exercise
                 </button>
                 <button class="btn btn-small" id="resetWorkoutsBtn">
@@ -654,70 +770,50 @@
               </div>
             </div>
 
+            <!-- Category filter -->
             <div class="workout-categories">
-              <div class="category-tab active" data-category="all">
-                All Workouts
-              </div>
+              <div class="category-tab active" data-category="all">All</div>
               <div class="category-tab" data-category="push">Push 💪</div>
               <div class="category-tab" data-category="pull">Pull 🤸</div>
               <div class="category-tab" data-category="legs">Legs 🦵</div>
               <div class="category-tab" data-category="cardio">Cardio 🏃</div>
             </div>
 
+            <!-- Exercise cards (all custom) -->
             <div id="workoutList" class="workout-list">
-              <!-- populated by JS -->
+              <!-- Populated by workoutsManager.render() -->
             </div>
 
+            <!-- Completed today -->
             <div class="completed-section">
-              <h3>✅ Today's Completed Workouts</h3>
+              <h3>✅ Completed Today</h3>
               <div id="completedWorkouts" class="completed-list">
                 <p class="empty-state">
                   No workouts completed yet. Let's get moving! 💪
                 </p>
               </div>
             </div>
-
-            <div class="custom-exercises-section">
-              <h3>⭐ Custom Exercises</h3>
-              <div id="customExercisesList" class="custom-exercises-list">
-                <p class="empty-state">
-                  No custom exercises yet. Create one to get started! ➕
-                </p>
-              </div>
-            </div>
           </section>
 
-          <!-- History Tab -->
+          <!-- ══ HISTORY TAB — Calendar ══ -->
           <section id="history-tab" class="tab-content">
-            <div class="tab-header"><h2>Progress History</h2></div>
-            <div class="history-stats card">
-              <div class="history-stat">
-                <span class="stat-label">Total Workouts</span
-                ><span class="stat-value" id="totalWorkouts">0</span>
-              </div>
-              <div class="history-stat">
-                <span class="stat-label">Total Water</span
-                ><span class="stat-value" id="totalWater">0L</span>
-              </div>
-              <div class="history-stat">
-                <span class="stat-label">Current Weight</span
-                ><span class="stat-value" id="currentWeight">0</span>
-              </div>
+            <div class="tab-header">
+              <h2>Progress Calendar</h2>
             </div>
-            <div class="analytics-section card">
-              <div id="weeklySummary" class="summary-container"></div>
+
+            <!-- Stats summary row -->
+            <div id="historyStatsContainer" class="history-stats-row">
+              <!-- Rendered by uiManager.renderHistoryStats() -->
             </div>
-            <div class="analytics-section card">
-              <div id="monthlySummary" class="summary-container"></div>
-            </div>
-            <div class="history-list">
-              <h3>Recent Days</h3>
-              <div id="historyEntries" class="history-entries">
-                <p class="empty-state">
-                  Your history will appear here as you track your fitness! 📊
-                </p>
+
+            <!-- Calendar -->
+            <div class="card calendar-card">
+              <div id="calendarContainer">
+                <!-- Rendered by uiManager.renderCalendar() -->
               </div>
             </div>
+
+            <!-- Data management -->
             <div class="data-management card">
               <h3>📤 Data Management</h3>
               <p>Export or import your fitness data</p>
@@ -735,6 +831,8 @@
                 placeholder="Your exported data will appear here..."
               ></textarea>
             </div>
+
+            <!-- Danger zone -->
             <div class="danger-zone card">
               <h3>⚠️ Danger Zone</h3>
               <p>
@@ -747,6 +845,7 @@
             </div>
           </section>
         </div>
+        <!-- /dashboard -->
       </main>
     </div>
 
@@ -755,43 +854,6 @@
 
     <!-- Scripts — order matters -->
     <script src="js/storage.js"></script>
-
-    <!-- Patch: add saveCustomExercises to storage if not present -->
-    <script>
-      if (typeof storage !== "undefined" && !storage.saveCustomExercises) {
-        storage.saveCustomExercises = function (exercises) {
-          try {
-            const data = JSON.parse(
-              localStorage.getItem("fitflow_data") || "{}",
-            );
-            const today = new Date().toISOString().split("T")[0];
-            if (!data[today]) data[today] = {};
-            data[today].customExercises = exercises;
-            // Also save globally so it persists across days
-            data._customExercises = exercises;
-            localStorage.setItem("fitflow_data", JSON.stringify(data));
-          } catch (e) {
-            console.error("saveCustomExercises error", e);
-          }
-        };
-
-        // Patch getCustomExercises to also check global key
-        const _orig = storage.getCustomExercises.bind(storage);
-        storage.getCustomExercises = function () {
-          const local = _orig();
-          if (local && local.length) return local;
-          try {
-            const data = JSON.parse(
-              localStorage.getItem("fitflow_data") || "{}",
-            );
-            return data._customExercises || [];
-          } catch (e) {
-            return [];
-          }
-        };
-      }
-    </script>
-
     <script src="js/ui.js"></script>
     <script src="js/calories.js"></script>
     <script src="js/water.js"></script>
